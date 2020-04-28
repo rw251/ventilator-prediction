@@ -2,7 +2,9 @@
 <p></p>
 
 <script>
-  fetch('https://ventilator.azurewebsites.net/api/Ping')
+  fetch('https://46rze3pkea.execute-api.eu-central-1.amazonaws.com/ventilate', {
+    method: 'POST'
+  })
     .then(x => x.text())
     .then(data => {
       console.log(data);
