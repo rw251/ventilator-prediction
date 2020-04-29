@@ -9,7 +9,7 @@ import { terser } from 'rollup-plugin-terser';
 // import { execSync } from 'child_process';
 import createHTMLPlugin from './lib/create-html';
 import createServiceWorkerPlugin from './lib/create-service-worker';
-// import { version } from './package.json';
+import { version } from './package.json';
 
 require('dotenv').config()
 
@@ -51,7 +51,7 @@ function buildConfig({ watch, isProduction } = {}) {
       // builtins(),
       babel({ exclude: 'node_modules/**' }),
       !isDev && terser(), // uglify the code if not dev mode
-      createHTMLPlugin({ isDev /*, rollbarClientToken */}), // create the index.html
+      createHTMLPlugin({ isDev, version /*, rollbarClientToken */}), // create the index.html
       copy({
         targets: [
           { src: 'src/static/*', dest: distDir, dot: true },

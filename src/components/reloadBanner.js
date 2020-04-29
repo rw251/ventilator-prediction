@@ -1,13 +1,15 @@
 import { subscribe } from '../scripts/pubsub';
 
-const $banner = document.getElementById('reloadBanner');
+const $reloadBanner = document.getElementById('reloadBanner');
+const $onlineBanner = document.querySelector('header');
 
-$banner.addEventListener('click', () => {
+$reloadBanner.addEventListener('click', () => {
   window.location.reload();
 });
 
 const makeVisible = () => {
-  $banner.style.display = 'block';
+  $onlineBanner.style.display = 'none';
+  $reloadBanner.style.display = 'block';
 };
 
 subscribe('NEW_SW_CONTROLLING', makeVisible);

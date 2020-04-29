@@ -31,22 +31,39 @@
       margin: 0;
     }
 
-    #offlineBanner {
-      display:none;
-    }
-    .offline #offlineBanner {
-      display: block;
+    .if-offline  {
+      display: none;
+      background: #dadada;
+      color: #000;
+      padding: 5px 10px;
     }
 
+    .offline header .if-offline  {
+      display: block;
+    }
   </style>
 </head>
 <body>
-  <div id="offlineBanner" style="background-color: #555; color: white; font-weight: bold; line-height: 30px; width: 100% ">You are offline. The model will still work, but there might be a newer version available.</div>
-  <div id="reloadBanner" style="display: none; background-color: black; color: white; font-weight: bold; cursor: pointer; line-height: 56px;width: 100%;">New version available - click here to load</div>
-  
-  <div>Change content</div>
+  <header style="background-color: #3e51b5; color: white; font-weight: bold; cursor: pointer;width: 100%;">
+    <div style="max-width: 300px;margin: 0 auto;padding: 15px 0;">
+      <span class="heading">Ventilator Predictor v{{ version }}</span>
+    </div>
+    <span class="if-offline">Offline mode. The model will still work, but there might be a newer version available.</span>
+  </header>
 
-  <div>Icons made by <a href="https://www.flaticon.com/authors/vectors-market" title="Vectors Market">Vectors Market</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+  <div id="reloadBanner" style="display: none; background-color: #f09025; color: white; font-weight: bold; padding: 15px 0;cursor: pointer;width: 100%;">
+    New version available - click here to load
+  </div>
+  
+  <div class="content" style="margin-top: 20px">
+    <input id="input-age" type="text" placeholder="Age" />
+    <input id="input-pulse" type="text" placeholder="Pulse" />
+    <button id="button-calculate">Calculate Risk</button>
+
+    <div id="result" style="margin-top: 50px;font-size: 30px;">Result will go here...</div>
+  </div>
+
+  <div style="position: fixed;bottom: 0;right: 0;left: 0;font-size: 12px;" >Icons made by <a href="https://www.flaticon.com/authors/vectors-market" title="Vectors Market">Vectors Market</a> from <a href="https://www.flaticon.com/" title="Flaticon">flaticon.com</a></div>
 
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=default,fetch"></script>
   <script src="/{{ scriptFile }}"></script>
