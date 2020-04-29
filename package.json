@@ -6,7 +6,8 @@
   "scripts": {
     "build": "rollup -c",
     "build:watch": "rollup -c -w",
-    "start": "concurrently -kill-others-on-fail \"npm run build:watch\" \"http-server ./public -p 5901 -a localhost -c-1 -o\""
+    "start": "concurrently -kill-others-on-fail \"npm run build:watch\" \"http-server ./public -p 5901 -a localhost -c-1 -o\"",
+    "deploy": "node deploy.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
     "concurrently": "^5.2.0",
     "dotenv": "^8.2.0",
     "http-server": "^0.12.3",
+    "inquirer": "^7.1.0",
     "mustache": "^4.0.1",
     "rimraf": "^3.0.2",
     "rollup": "^2.7.3",
