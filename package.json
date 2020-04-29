@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rollup -c",
     "build:watch": "rollup -c -w",
-    "start": "concurrently -kill-others-on-fail \"npm run build:watch\" \"http-server ./dist -p 5901 -a localhost -c-1 -o\""
+    "start": "concurrently -kill-others-on-fail \"npm run build:watch\" \"http-server ./public -p 5901 -a localhost -c-1 -o\""
   },
   "repository": {
     "type": "git",

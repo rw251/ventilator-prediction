@@ -19,7 +19,7 @@ require('dotenv').config()
 // const SOURCE_VERSION = process.env.SOURCE_VERSION || execSync('git rev-parse --short HEAD').toString();
 // const USER = execSync('whoami').toString();
 
-const distDir = 'dist';
+const distDir = 'public';
 // Remove ./dist
 rimraf.sync(distDir);
 
