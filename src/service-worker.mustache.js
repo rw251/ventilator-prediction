@@ -3,7 +3,7 @@ const CACHE_NAME = 'ventilate-{{version}}-{{randomNumber}}';
 // Never cache
 const nc = [
   /\.map$/,
-  /^manifest.*\.js(?:on)?$/,
+  /manifest.*\.js(?:on)?$/,
   /\.htaccess/,
 ];
 
@@ -29,6 +29,24 @@ pcb.push('/'); // add root to cache
 const precacheFiles = [
   // 'dictionaryZ.json'
 ];
+
+// Passed into catch block of a fetch so could access err
+// event if needed. We#re assuming that any error from a 
+// fetch indicates offline.
+var notifyOffline = function() {
+  self.clients.matchAll().then(clients => {
+    clients.forEach(client => client.postMessage({offline:true, online:false}));
+  });
+}
+
+// Passed into then block of a fetch so pass through the
+// result
+var notifyOnline = function(response) {
+  self.clients.matchAll().then(clients => {
+    clients.forEach(client => client.postMessage({online:true, offline:false}));
+  });
+  return response;
+}
 
 self.addEventListener('install', function(event) {
   console.log(`Install event called for ${  CACHE_NAME}`);
@@ -107,8 +125,9 @@ var StaleWhileRevalidate = function(event) {
         const fetchPromise = fetch(event.request).then(function(networkResponse) {
           console.log(`${id}|| SWR caching the network response`);
           cache.put(event.request, networkResponse.clone());
+          notifyOnline();
           return networkResponse;
-        })
+        }).catch(notifyOffline);
         console.log(`${id}|| SWR returning response or fetchPromise`);
         return response || fetchPromise;
       })
@@ -122,7 +141,7 @@ var CacheWithNetworkFallback = function(event){
   event.respondWith(
     caches.match(event.request).then(function(response) {
       console.log(`${id}|| CWNF in cache: ${  !!response}`);
-      return response || fetch(event.request);
+      return response || fetch(event.request).then(notifyOnline).catch(notifyOffline);
     })
   );
 }
@@ -131,7 +150,7 @@ var NetworkWithCacheFallback = function(event){
   const id = (Math.random()*1000000).toString().substr(0,4);
   console.log(`${id}|| NWCF for: ${  event.request.url}`);
   event.respondWith(
-    fetch(event.request).catch(function() {
+    fetch(event.request).then(notifyOnline).catch(function() {
       console.log(`${id}|| NWCF failed - check cache: ${  !!response}`);
       return caches.match(event.request);
     })
@@ -140,5 +159,5 @@ var NetworkWithCacheFallback = function(event){
 
 var NetworkOnly = function(event) {
   console.log(`${event.request.url  } || network only`)
-  event.respondWith(fetch(event.request));
+  event.respondWith(fetch(event.request).then(notifyOnline).catch(notifyOffline));
 }
